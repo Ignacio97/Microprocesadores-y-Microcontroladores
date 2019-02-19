@@ -17,99 +17,155 @@ locals
 principal PROC
          mov sp,0fffh			; inicializa SP (Stack Pointer)
 
-@@sigue:
-         mov  al,'x'
-   call putchar
-   jmp @@sigue
+again:   numero = 100
+         mov ax,numero
+         call n_numero_feo
+
+         base = 10
+         mov bx,base
+         call printNumBase
+         jmp again
 
    ret						; nunca se llega aqu�
    ENDP
 
 
-;***************************************************************
-;  procedimientos
-;***************************************************************
- putchar	proc
+
+   ;recibe en al el numero
+   ;devuelve en ax el n numero feo
+   n_numero_feo PROC
+       push cx
+
+
+       mov cl,1   ;cl = 1  ;cont
+       mov ch,al  ;ch = al
+       mov ax,1
+
+     WH: cmp ch,cl
+         jbe finWH
+         inc ax
+
+         push ax
+         call esfeo
+         cmp ah,1
+         jne nofeo
+         inc cl
+   nofeo:pop ax
+         jmp WH
+   finWH:
+       pop cx
+     ret
+   ENDP
+
+
+   ;recibe en ax dividendo, en bx divisor
+   ;reduelve en cx el residuo
+   residuo PROC
    push ax
    push dx
-   mov dl,al
-   mov ah,2				; imprimir caracter DL
-   int 21h					; usando servico 2 (ah=2)
-   pop dx					; del int 21h
+   push bx
+
+       xor dx,dx
+       div bx
+       mov cx,dx
+
+   pop bx
+   pop dx
    pop ax
-   ret
-   endp
+       ret
+   ENDP
 
-end   principal              ; End of program
+   ;recide en ax numero a checar
+   ;devuelve en ah 1 si es feo, caso contrario 0
+   esfeo PROC
+     push cx
+     push dx
+     push bx
+
+     xor cx,cx
+     divisor = 2
+     mov bx,divisor
+
+     doo1: call residuo
+           cmp cx,0
+           jne findoo1
+           xor dx,dx
+           div bx
+           jmp doo1
+   findoo1:
+
+           divisor = 3
+           mov bx,divisor
+
+     doo2: call residuo
+           cmp cx,0
+           jne findoo2
+           xor dx,dx
+           div bx
+           jmp doo2
+   findoo2:
+
+           divisor = 5
+           mov bx,divisor
+
+     doo3:  call residuo
+           cmp cx,0
+           jne findoo3
+           xor dx,dx
+           div bx
+           jmp doo3
+   findoo3:
+
+               cmp ax,1
+               jne noEsUno
+               mov ah,al
+               jmp final
+     noEsUno:  mov ah,0
+     final:
+
+     pop bx
+     pop dx
+     pop cx
+     ret
+   ENDP
 
 
 
+   ;recibe en ax numero a imprimir y bx la base solicitada.
+   printNumBase PROC
+           push ax ;salvar registros
+           push cx
+           push dx
 
-;recibe en CH dividendo, en CL divisor
-;reduelve en CH residuo
-residuo PROC
-    push ax
+           xor dx,dx ;dx=0
+           contador = 0
+           mov cx,contador
 
-    xor ax,ax
-    mov al,ch
-    div cl
-    mov ch,ah
+     doo:
+           div bx      ;ax=ax/bx
+           add dx,30h  ;dx=ax%bx + 30h
+           cmp dx,39h  ;residuo mayor a 9?
+           jbe l1      ;no then push
+           add dx,7h   ;si, then add 7
+     l1:   push dx
+           inc cx
+           xor dx,dx ;dx=0
+           cmp ax,0  ;cociente != 0 ?
+           jne doo
 
-    pop ax
-ENDP
+           mov ah,2
+   print:  pop dx
+           int 21h
+           loop print
 
-;recide en al numero a checar
-;devuelve en ah 1 si es feo, caso contrario 0
-es_feo PROC
-  push cx
+           pop dx  ;recuperar registros
+           pop cx
+           pop ax
 
-  xor cx,cx
-  divisor = 2
 
-  mov ch,al
-  mov cl,divisor
+           ret
+       ENDP
 
-  doo1: call residuo
-        cmp ch,0
-        jne findoo1
-        xor ah,ah
-        div cl
-        mov ch,al
-        jmp doo1
-findoo1:
 
-        divisor = 3
-        mov cl,divisor
-        mov ch,al
 
-  doo2: call residuo
-        cmp ch,0
-        jne findoo2
-        mov ch,divisor
-        xor ah,ah
-        div ch
-        mov ch,al
-        jmp doo1
-findoo2:
-
-        divisor = 5
-        mov cl,divisor
-        mov ch,al
-
-  doo3:  call residuo
-        cmp ch,0
-        jne findoo3
-        mov ch,divisor
-        xor ah,ah
-        div ch
-        mov ch,al
-        jmp doo1
-findoo3:
-
-            cmp al,1
-            jne noEsUno
-            mov ah,al
-  noEsUno:  mov ah,0
-
-  pop cx
-ENDP
+END; End of program
