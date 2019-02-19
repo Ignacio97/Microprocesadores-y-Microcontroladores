@@ -1,15 +1,12 @@
-
+﻿
 .model tiny
-
-;----- Insert INCLUDE "filename" directives here
-;----- Insert EQU and = equates here
 
 locals
 
 .data
 
 .code
-          org 100h
+org 100h
 
 ;*************************************************************
 ;  Procedimiento principal
@@ -17,14 +14,20 @@ locals
 principal PROC
          mov sp,0fffh			; inicializa SP (Stack Pointer)
 
-again:   numero = 100
+@@again:   numero = 100
          mov ax,numero
          call n_numero_feo
 
          base = 10
          mov bx,base
          call printNumBase
-         jmp again
+
+         mov ah,02h
+         mov dl,10 ;enter
+         int 21h 
+         mov dl,13 ;car return
+         int 21h
+         jmp @@again
 
    ret						; nunca se llega aqu�
    ENDP
@@ -168,4 +171,4 @@ again:   numero = 100
 
 
 
-END; End of program
+END  principal  ; End of program
