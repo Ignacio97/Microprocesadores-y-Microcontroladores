@@ -11,7 +11,7 @@ void my_itoa(char *str, unsigned int number, unsigned char base);
 
 int main(void){
         char str[50];
-        char newLine[] = {13,10,0};
+
         int n;
 
         while(1) {
@@ -21,12 +21,16 @@ int main(void){
                 my_itoa(str,n,2);
                 my_puts("bin-> ");
                 my_puts(str);
-				my_puts(newLine);                
+                my_putchar(13);
+                my_putchar(10);
                 my_itoa(str,n,16);
                 my_puts("hex-> ");
                 my_puts(str);
-                my_puts(newLine);     
-                my_puts(newLine);     
+                my_putchar(13);
+                my_putchar(10);
+                my_putchar(13);
+                my_putchar(10);
+
         }
 
 
