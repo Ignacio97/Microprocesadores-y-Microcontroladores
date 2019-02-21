@@ -1,13 +1,6 @@
-   
-.model small
-   locals
-   
+
+.model tiny
 .code
-             org 100h
-	
-;*************************************************************
-;  Procedimiento principal
-;*************************************************************	
 
 	public _my_putchar
 	public _my_getchar
@@ -22,30 +15,25 @@
 		mov dl,[bp + 8]
 		mov ah,02
 		int 21h
-		
+
 		pop ax
 		pop dx
 		pop bp
 		ret
- _my_putchar endp
+ _my_putchar ENDP
 
-	
-	
  _my_getchar PROC
-		mov ah,01
+		mov ah,01h
 		int 21h
 		xor ah,ah ;ax = al
-		ret		
- _my_getchar endp
-
-
+		ret
+ _my_getchar ENDP
 
  _my_getch PROC
 		mov ah,08
 		int 21h
 		xor ah,ah
 		ret
- _my_getch endp
-end
+ _my_getch ENDP
 
-  
+END
