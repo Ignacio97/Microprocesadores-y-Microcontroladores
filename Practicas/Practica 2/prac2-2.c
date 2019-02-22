@@ -17,6 +17,8 @@ int main(void){
         while(1) {
                 my_puts("input: ");
                 my_gets(str);
+                my_putchar(13);
+                my_putchar(10);
                 n = my_atoi(str);
                 my_itoa(str,n,2);
                 my_puts("bin-> ");
@@ -30,7 +32,6 @@ int main(void){
                 my_putchar(10);
                 my_putchar(13);
                 my_putchar(10);
-
         }
 
 
