@@ -10,11 +10,17 @@ void my_itoa(char *str, unsigned int number, unsigned char base);
 
 
 int main(void){
-        char str[50];
+        char str[20];
 
-        int n;
+        int i = 0;
 
-        while(1) {
+        while(i++<20){
+          str[i]  = 'a';
+        }
+        str[18] = 'b';
+        str[19] = 0; 
+        
+      /*    while(1) {
                 my_puts("input: ");
                 my_gets(str);
                 my_putchar(13);
@@ -32,10 +38,20 @@ int main(void){
                 my_putchar(10);
                 my_putchar(13);
                 my_putchar(10);
-        }
+        }*/
 
-
-
+        while(1){
+                my_puts("input: ");
+                my_gets(str);
+                my_putchar(13);
+                my_putchar(10);
+                my_puts("res: ");
+                my_puts(str);
+                my_putchar(13);
+                my_putchar(10);
+                my_putchar(13);
+                my_putchar(10);
+}
 
         return 0;
 }
@@ -43,31 +59,47 @@ int main(void){
 
 void my_gets(char *str){
 
-        const unsigned char max_size = 50;
+        const unsigned char max_size = 10;
         const char *const aux = str;
         char c;
+        int overflow=0;
 
         c = my_getchar();
 
-        while( (c != 13) && (str < aux + max_size - 1)) {
+        while( c != 13) {
 
-                if (c == 8) { /*if c is backspace*/
-                        if (str != aux) { /*does the str has something stored?*/
-                                my_putchar(32); /*white space ascii*/
-                                my_putchar(c); /*if the program has reached here c must be backspace!!*/
-                                str--; /*decrease str*/
+
+                if (c != 8 ) {
+                  if ( str < aux + max_size - 1 ){
+                    *(str++) = c;
+                  }
+                  else
+                    overflow++;
+                        
+                }
+                else if ( c == 8) {
+                        if (str == aux) {
+                                my_putchar(32);
+                        }
+                        else if (!overflow ) {
+                                my_putchar(32);
+                                my_putchar(c);
+                                str--;
                         }
                         else{
-                                my_putchar(32); /*white space ascii*/
+                                my_putchar(32);
+                                my_putchar(c);
+                                overflow--;
                         }
                 }
-                else{
-                        *(str++) = c;
-                }
-                c = my_getchar();
+
+                c = my_getchar(); 
         }
-        *(str) = '\0';
+
+        *str = 0;
+
 }
+
 
 void my_puts(const char *str){
         while(*str)
