@@ -1,4 +1,3 @@
-
 extern void my_putchar(char c);
 extern char my_getchar(void);
 extern char my_getch(void);
@@ -12,15 +11,9 @@ void my_itoa(char *str, unsigned int number, unsigned char base);
 int main(void){
         char str[20];
 
-        int i = 0;
 
-        while(i++<20){
-          str[i]  = 'a';
-        }
-        str[18] = 'b';
-        str[19] = 0; 
-        
-      /*    while(1) {
+        unsigned int n;
+        while(1) {
                 my_puts("input: ");
                 my_gets(str);
                 my_putchar(13);
@@ -38,20 +31,7 @@ int main(void){
                 my_putchar(10);
                 my_putchar(13);
                 my_putchar(10);
-        }*/
-
-        while(1){
-                my_puts("input: ");
-                my_gets(str);
-                my_putchar(13);
-                my_putchar(10);
-                my_puts("res: ");
-                my_puts(str);
-                my_putchar(13);
-                my_putchar(10);
-                my_putchar(13);
-                my_putchar(10);
-}
+        }
 
         return 0;
 }
@@ -59,41 +39,39 @@ int main(void){
 
 void my_gets(char *str){
 
-        const unsigned char max_size = 10;
+        const unsigned char max_size = 20;
         const char *const aux = str;
         char c;
-        int overflow=0;
+
 
         c = my_getchar();
 
         while( c != 13) {
 
-
                 if (c != 8 ) {
-                  if ( str < aux + max_size - 1 ){
-                    *(str++) = c;
-                  }
-                  else
-                    overflow++;
-                        
+                        if ( str < aux + max_size - 1 ) {
+                                *(str++) = c;
+                        }
+                        elses {
+                                my_putchar(8);
+                                my_putchar(32);
+                                my_putchar(8);
+
+                        }
+
                 }
-                else if ( c == 8) {
+                else {
                         if (str == aux) {
                                 my_putchar(32);
                         }
-                        else if (!overflow ) {
+                        else  {
                                 my_putchar(32);
                                 my_putchar(c);
                                 str--;
                         }
-                        else{
-                                my_putchar(32);
-                                my_putchar(c);
-                                overflow--;
-                        }
                 }
 
-                c = my_getchar(); 
+                c = my_getchar();
         }
 
         *str = 0;
