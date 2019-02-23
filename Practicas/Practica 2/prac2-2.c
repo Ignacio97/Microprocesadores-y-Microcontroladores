@@ -52,7 +52,7 @@ void my_gets(char *str){
                         if ( str < aux + max_size - 1 ) {
                                 *(str++) = c;
                         }
-                        elses {
+                        else {
                                 my_putchar(8);
                                 my_putchar(32);
                                 my_putchar(8);
