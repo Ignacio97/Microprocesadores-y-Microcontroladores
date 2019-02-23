@@ -10,9 +10,8 @@ void my_itoa(char *str, unsigned int number, unsigned char base);
 
 int main(void){
         char str[20];
-
-
         unsigned int n;
+
         while(1) {
                 my_puts("input: ");
                 my_gets(str);
@@ -52,7 +51,7 @@ void my_gets(char *str){
                         if ( str < aux + max_size - 1 ) {
                                 *(str++) = c;
                         }
-                        elses {
+                        else {
                                 my_putchar(8);
                                 my_putchar(32);
                                 my_putchar(8);
