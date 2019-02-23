@@ -10,9 +10,8 @@ void my_itoa(char *str, unsigned int number, unsigned char base);
 
 int main(void){
         char str[20];
-
-
         unsigned int n;
+
         while(1) {
                 my_puts("input: ");
                 my_gets(str);
