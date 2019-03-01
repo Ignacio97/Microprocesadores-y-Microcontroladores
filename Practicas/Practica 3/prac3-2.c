@@ -25,6 +25,8 @@ int main(void) {
 byte dataBusTest(const word segment,const word offset) {
         byte i,j,pattern,success;
         const byte tests[] = {0x0,0xAA};
+        /***0x0 and 0xAA inverted are 0xFF and 0x55 respectively.00 and 55 are used to
+           check   sticky bits; AA and 55 are used to check crosstalk bits***/
 
         i = j = success = 0; /***zero means success*/
 
@@ -46,8 +48,35 @@ byte dataBusTest(const word segment,const word offset) {
 
 
 
-word addressBusTest(const word segment,const word offset,byte bus_lines){
-        word pattern, success = 0;
+word addressBusTest(const word segment,const word offset,byte connected_lines){
+        word totalAddress = 1,ramLoc,success=0;
+        byte pattern = 0xFF;
+
+/***totalAddress is set to 2 raised to connected_lines***/
+        while (connected_lines--)
+                totalAddress *= 2;
+
+        /***set all memory to 0**/
+        for (ramLoc = offset; ramLoc < offset + totalAddress; ramLoc++)
+                poke(segment,ramLoc,0);
+
+        /**write a nonzero value in the first address**/
+        poke(segment,offset,pattern);
+        /**search from the second position to the end for a nonzero value.**/
+        for (ramLoc = offset + 1; (ramLoc < offset + totalAddress) && !success; ramLoc++) {
+                success = (!peek(segment,ramLoc)) ? success : ramLoc;
+        }
+
+
+        /**write a nonzero value in the last address**/
+        poke(segment,offset + totalAddress - 1,pattern);
+        /**search from the second position to the end for a nonzero value.**/
+        for (ramLoc = offset; (ramLoc < offset + totalAddress - 1) && !success; ramLoc++)
+                success = (!peek(segment,ramLoc)) ? success : ramLoc;
+
+
+
+
 
 
         return success;
