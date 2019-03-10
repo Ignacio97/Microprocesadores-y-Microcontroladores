@@ -7,14 +7,14 @@
 
 ;unsigned char peek(unsigned int segment, unsigned int offset)
         _peek PROC
-          push bp
+          push bp  ;saving registers
           push ds
           push bx
 
-          xor ax,ax
+          xor ax,ax       ;ax = 0
           mov bp,sp
-          mov ds,[bp + 8]  ;segment
-          mov bx,[bp + 10]  ;offset
+          mov ds,[bp + 8]  ;moving the given segment to ds
+          mov bx,[bp + 10]  ;||     ||   ||   ||     ||  offset
           mov al,[bx]     ;byte stored in ds*10h+offset has been moved to al
 
           pop bx
@@ -26,7 +26,7 @@
 ;void poke(unsigned int segment, unsigned int offset, unsigned char data)
 
           _poke PROC
-              push bp
+              push bp   ;saving registers
               push bx
               push ds
               push dx

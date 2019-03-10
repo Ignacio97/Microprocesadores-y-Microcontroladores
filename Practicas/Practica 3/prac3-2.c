@@ -5,13 +5,16 @@
 ***************************/
 
 
+typedef unsigned char byte;
+typedef unsigned int word;
+
 /***************************
 **  Function : Poke()
 **
 **  Writes the given byte into memory at the
 **  specified segment and offset.
 ***************************/
-extern void poke(unsigned int segment, unsigned int offset, unsigned char data);
+extern void poke(word segment,word offset, byte data);
 
 /***************************
 **  Function : peek()
@@ -21,14 +24,13 @@ extern void poke(unsigned int segment, unsigned int offset, unsigned char data);
 **
 **  Returns: The byte read from memory.
 ***************************/
-extern unsigned char peek(unsigned int segment, unsigned int offset);
+extern unsigned char peek(word segment, word offset);
+
 
 extern void my_putchar(char c);
 extern char my_getchar(void);
 extern char my_getch(void);
 
-typedef unsigned char byte;
-typedef unsigned int word;
 
 /***********PROTOTYPES********/
 void my_puts(const char *str);
@@ -39,13 +41,16 @@ void addresBusStatus(word status,byte lines);
 void enter();
 /***********PROTOTYPES********/
 
+const word SEG =0; /*segment*/
+const word OFST  = 0x2800; /*offset*/
+const byte LIN = 11;  /*lines*/
 
 
 int main(void) {
 
         for(;;) {
-                dataBusStatus(dataBusTest(0,0x2200));
-                addresBusStatus(addressBusTest(0,0x2800,11),11);
+                dataBusStatus(dataBusTest(SEG,OFST));
+                addresBusStatus(addressBusTest(SEG,OFST,LIN),LIN);
                 my_getch();
         }
 
@@ -55,7 +60,7 @@ int main(void) {
 /***************************
 **  Function : dataBusTest()
 **
-**  Check a 8 bits data bus in the given specified
+**  Checks a 8 bits data bus in the given address specified
 **  by the segment and offset.
 **
 ** Returns : 0 if the test succeeds,otherwise
@@ -69,22 +74,31 @@ byte dataBusTest(const word segment,const word offset) {
         success = 0; /***zero means success*/
 
         for ( pattern = 1; pattern; pattern<<=1) {
-
                 poke(segment,offset,pattern);
-
                 if ( peek(segment,offset) != pattern) {
                         success |= pattern;
                 }
         }
-
         return success;
 }
 
-
+/***************************
+**  Function : addressBusTest()
+**
+**  Param:
+**  connected_lines : Lines connected to memory.
+**
+** Returns : 0 if the test succeeds,otherwise
+**  a binary pattern representation of the wrong lines.
+**    Example: If 0x0080 is returned means bit 7 is not working.
+**
+** Note:connected_lines must be a number above than zero and below or equal to sixteen.
+***************************/
 word addressBusTest(const word segment,const word offset,byte connected_lines){
-        word success,ramLoc,pattern;
+        word success,ramLoc;
+        byte pattern;
 
-        pattern = 0xAAAA;
+        pattern = 0xAA;
         success = 0;
 
         /**filling each power of two address to zero*/
@@ -152,7 +166,6 @@ void addresBusStatus(word status,byte lines) {
 
         enter();
 }
-
 
 void my_puts(const char *str){
         while(*str)

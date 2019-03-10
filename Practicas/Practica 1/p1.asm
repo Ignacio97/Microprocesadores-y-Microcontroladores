@@ -1,10 +1,7 @@
 ﻿
 .model tiny
-
 locals
-
 .data
-
 .code
 org 100h
 
@@ -24,7 +21,7 @@ principal PROC
 
          mov ah,02h
          mov dl,10 ;enter
-         int 21h 
+         int 21h
          mov dl,13 ;car return
          int 21h
          jmp @@again
