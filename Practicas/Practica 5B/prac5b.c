@@ -27,8 +27,9 @@ extern char getch();
 
 
 void  main(void) {
-
-
+	byte leds ;
+		leds = scan_bits();
+		turnOn_leds(leds);
 
 }
 
@@ -46,7 +47,7 @@ byte testBitPort(word port,byte num_bit) {
 }
 
 void setBitPort(word port,byte num_bit) {
-        outportb(port,inportb(port) | (0x1 << num_bit) );
+        outportb(port,inportb(port) | (0x01 << num_bit) );
 }
 
 byte scan_bits(void){
@@ -73,17 +74,79 @@ puts("-Captura de bits-\n\r\n\r");
 	return bits;
 }
 
-void turnOn_leds(byte bits ){
+/*
+-----------------------
+led no|	PA | PB | PC |
+-----------------------
+0	  | 0  | 1  | X  |
+-----------------------
+1	  | 1  | 0  | X  |
+-----------------------
+2	  | X  | 0  | 1  |
+-----------------------
+3	  | X  | 1  | 0  |
+-----------------------
+4	  | 1  | X  | 0  |
+-----------------------
+5	  | 0  | X  | 1  |
+-----------------------
+*/
+void turnOn_leds(byte bits){
 
+	
+	byte i ,bit ;
+
+	i = bit = 0;
 
 		while(true){
 
-			outportb(RCTR,PA_AND_PB_OUT); 
+			
+
+			if ( (bits) & (1<<bit) ){
 						
+				if (bit == 1 || bit == 0)				
+					outportb(RCTR,PA_AND_PB_OUT);
+				else if (bit == 2 || bit == 3)
+					outportb(RCTR,PB_AND_PC_OUT);
+				else	
+					outportb(RCTR,PA_AND_PC_OUT);
+					
+				switch(bit){
+					case 0:
+					clrBitPort(PA,1);
+					setBitPort(PB,1); 
+					break;
 
+					case 1: 
+					clrBitPort(PB,1);
+					setBitPort(PA,1); 
+					break;
 
-			outportb(RCTR,PB_AND_PC_OUT); 
-			outportb(RCTR,PA_AND_PC_OUT); 
+					case 2: 
+					clrBitPort(PB,1);
+					setBitPort(PC,1); 
+					break;
 
+					case 3: 
+					clrBitPort(PC,1);
+					setBitPort(PB,1); 
+					break;
+
+					case 4: 
+					clrBitPort(PC,1);
+					setBitPort(PA,1); 
+					break;
+
+					case 5: 
+					clrBitPort(PA,1);
+					setBitPort(PC,1); 
+					break;
+				}
+			}
+
+							
+
+			bit = ++bit % 6;
+			i = ++i % 3;
 		}
 }
