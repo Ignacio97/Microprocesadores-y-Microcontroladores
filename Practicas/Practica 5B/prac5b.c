@@ -1,3 +1,4 @@
+
 #define true 1
 #define false !true
 
@@ -13,26 +14,33 @@
 	
 
 /*Rotate the given value to left n time, the value MUST be a byte*/
-#define ROL (value,n)((value << n) | (value >> (8-n)))
+#define ROL(value,n)((value << n) | (value >> (8-n)))
+
+#define SET_LED_ON(A,C) do{ \
+						setBitPort(A,1);\
+						clrBitPort(C,1);\
+						}while(0)
+
+
 
 typedef unsigned int word;
 typedef unsigned char byte;
 
-extern void inportb(word port);
-extern byte outportb(word port,byte data);
-extern void puts(char *str);
+extern byte inportb(word port);
+extern void outportb(word port,byte data);;
 extern void putchar(char c);
 extern char getch();
 
 
 
-void  main(void) {
-	byte leds ;
-		leds = scan_bits();
-		turnOn_leds(leds);
 
+void puts(char *str){
+
+	while (*str){
+
+		putchar(*(str++));
+	}
 }
-
 
 void  clrBitPort(word port,byte num_bit) {
         outportb(port, inportb(port) & ROL(0xFE,num_bit));
@@ -54,13 +62,11 @@ byte scan_bits(void){
 	byte bits,i,aux; 
  
 	i = bits = 0;
-	 
 	outportb(RCTR,0x9B);
 
-puts("-Captura de bits-\n\r\n\r");
+puts("Captura de bits\n\r\n\r");
 
-
-	while(i++ < 8){
+	while(i < 8){
 		puts("Bit ");
 		putchar(i + '0');
 		putchar(':');
@@ -69,84 +75,76 @@ puts("-Captura de bits-\n\r\n\r");
 		bits |= (aux<<i);
 		putchar(aux+'0');
 		puts("\n\r");
+		i++;
 	}
-
 	return bits;
 }
 
-/*
------------------------
-led no|	PA | PB | PC |
------------------------
-0	  | 0  | 1  | X  |
------------------------
-1	  | 1  | 0  | X  |
------------------------
-2	  | X  | 0  | 1  |
------------------------
-3	  | X  | 1  | 0  |
------------------------
-4	  | 1  | X  | 0  |
------------------------
-5	  | 0  | X  | 1  |
------------------------
-*/
-void turnOn_leds(byte bits){
 
-	
-	byte i ,bit ;
+void delay(unsigned byte a){
 
-	i = bit = 0;
-
-		while(true){
-
+	while(a--);
+}
+/*mas actual*/
+void turnOn_leds(byte l){
+	byte j,aux;
+	j =0 ;
+	while(true){
+		aux = l&(1<<j);
+		
+		if (aux)
+		{
 			
 
-			if ( (bits) & (1<<bit) ){
-						
-				if (bit == 1 || bit == 0)				
-					outportb(RCTR,PA_AND_PB_OUT);
-				else if (bit == 2 || bit == 3)
-					outportb(RCTR,PB_AND_PC_OUT);
-				else	
-					outportb(RCTR,PA_AND_PC_OUT);
-					
-				switch(bit){
-					case 0:
-					clrBitPort(PA,1);
-					setBitPort(PB,1); 
-					break;
+			if (j ==0 || j==1)
+				outportb(RCTR,0x89);
+			else if(j==2 || j==3)
+				outportb(RCTR,0x90);
+			else
+				outportb(RCTR,0x82);
 
-					case 1: 
-					clrBitPort(PB,1);
-					setBitPort(PA,1); 
-					break;
+			if (j==0)
+				SET_LED_ON(PB,PA);
+			else if(j==1)
+				SET_LED_ON(PA,PB);
+			else if(j==2)
+				SET_LED_ON(PC,PB);
+			else if(j==3)
+				SET_LED_ON(PB,PC);
+			else if(j==4)
+				SET_LED_ON(PA,PC);
+			else
+				SET_LED_ON(PC,PA);
 
-					case 2: 
-					clrBitPort(PB,1);
-					setBitPort(PC,1); 
-					break;
-
-					case 3: 
-					clrBitPort(PC,1);
-					setBitPort(PB,1); 
-					break;
-
-					case 4: 
-					clrBitPort(PC,1);
-					setBitPort(PA,1); 
-					break;
-
-					case 5: 
-					clrBitPort(PA,1);
-					setBitPort(PC,1); 
-					break;
-				}
-			}
-
-							
-
-			bit = ++bit % 6;
-			i = ++i % 3;
+			delay(20);
 		}
+
+		j++; 
+
+		if (j==6)
+				j=0;
+	
+
+	}
+
+
+	
+	
+
+}
+
+
+void  main(void) {
+	
+byte k;
+		k = scan_bits();
+
+	while(true){
+		
+		turnOn_leds(k);
+
+	}
+		
+		
+
 }
