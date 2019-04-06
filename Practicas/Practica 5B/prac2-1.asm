@@ -20,20 +20,20 @@
 		pop dx
 		pop bp
 		ret
- _putchar ENDP
+ ENDP
 
  _getchar PROC
 		mov ah,01h
 		int 21h
 		xor ah,ah ;ax = al
 		ret
- _getchar ENDP
+ENDP
 
  _getch PROC
 		mov ah,08
 		int 21h
 		xor ah,ah
 		ret
- _getch ENDP
+  ENDP
 
 END
