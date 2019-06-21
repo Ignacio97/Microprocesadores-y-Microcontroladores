@@ -1,0 +1,2 @@
+@ECHO OFF
+"C:\Program Files (x86)\Atmel\AVR Tools\AvrAssembler2\avrasm2.exe" -S "C:\Users\Ignacio\Desktop\ASM\labels.tmp" -fI -W+ie -o "C:\Users\Ignacio\Desktop\ASM\Simulacro_de_extra.hex" -d "C:\Users\Ignacio\Desktop\ASM\Simulacro_de_extra.obj" -e "C:\Users\Ignacio\Desktop\ASM\Simulacro_de_extra.eep" -m "C:\Users\Ignacio\Desktop\ASM\Simulacro_de_extra.map" "C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm"

@@ -1,0 +1,34 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.14</VERSION>
+ <DEVICE>ATmega2560</DEVICE>
+ <WORKING_DIR>C:\Users\Ignacio\Desktop\ASM</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files (x86)\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:\Program Files (x86)\Atmel\AVR Tools\AvrAssembler2\Appnotes\m2560def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Ignacio\Desktop\ASM\Simulacro_de_extra.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>C:\Users\Ignacio\Desktop\ASM\Simulacro_de_extra.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>C:\Users\Ignacio\Desktop\ASM\Simulacro_de_extra.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <main><FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</FILE><LINE>7</LINE></main>
+  <delay3><FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</FILE><LINE>48</LINE></delay3>
+  <delay1><FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</FILE><LINE>17</LINE></delay1>
+  <wh><FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</FILE><LINE>20</LINE></wh>
+  <delay2><FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</FILE><LINE>29</LINE></delay2>
+  <L1><FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</FILE><LINE>32</LINE></L1>
+  <L2><FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</FILE><LINE>33</LINE></L2>
+  <L3><FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</FILE><LINE>34</LINE></L3>
+  <A1><FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</FILE><LINE>51</LINE></A1>
+  <A2><FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</FILE><LINE>52</LINE></A2>
+  <A3><FILE>C:\Users\Ignacio\Desktop\ASM\delayBySoftware2.asm</FILE><LINE>53</LINE></A3>
+ </LABELS>
+</ASSEMBLER_INFO>
